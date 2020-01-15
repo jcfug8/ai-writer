@@ -19,7 +19,7 @@ func init() {
 	flag.StringVar(&AIAddr, "ai", "", "Address AI service will be reached at")
 	flag.StringVar(&Addr, "a", "127.0.0.1:8080", "Address Control service will be served at")
 
-	assetsDir, err := filepath.Abs("../../client")
+	assetsDir, err := filepath.Abs("../../../client")
 	if err != nil {
 		log.Panicf("unable to create default assests dir path: %s", err)
 	}

@@ -1,0 +1,40 @@
+syntax = "proto3";
+package protos;
+
+service Persist {
+    rpc GetUser (GetUserRequest) returns (GetUserReply);
+    rpc GetBook (GetBookRequest) returns (GetBookReply);
+    rpc CreateBook (CreateBookRequest) returns (CreateBookReply);
+}
+
+service Control {
+
+}
+
+service AI {
+
+}
+
+message GetUserRequest {
+
+}
+
+message GetUserReply {
+    
+}
+
+message GetBookRequest {
+
+}
+
+message GetBookReply {
+    
+}
+
+message CreateBookRequest {
+
+}
+
+message CreateBookReply {
+    
+}
