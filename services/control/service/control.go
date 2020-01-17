@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -45,8 +46,8 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 	s.router.Methods("POST").Path("/api/book").HandlerFunc(s.createBook)
 
 	// set up static file routes
-	s.router.PathPrefix("/").Handler(s.fileServer)
-	s.router.Path("/").HandlerFunc(s.serveIndex)
+	s.router.Methods("GET").PathPrefix("/assets/").Handler(s.fileServer)
+	s.router.Methods("GET").Path("/").HandlerFunc(s.serveIndex)
 
 	// set up http server
 	s.httpServer = &http.Server{
@@ -61,7 +62,7 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 
 // Serve - Start up the control service
 func (s *Service) Serve() error {
-	log.Info("serving control")
+	log.Infof("serving control at %s", s.opts.Addr)
 	return s.httpServer.ListenAndServe()
 }
 
@@ -72,36 +73,42 @@ func (s *Service) serveIndex(w http.ResponseWriter, r *http.Request) {
 
 func (s *Service) getUser(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	_, err := s.persistClient.GetUser(ctx, &pb.GetUserRequest{})
+	res, err := s.persistClient.GetUser(ctx, &pb.GetUserRequest{})
 	cancel()
 	if err != nil {
-		w.Write([]byte("error"))
+		e, _ := json.Marshal(err)
+		w.Write(e)
 		return
 	}
-	w.Write([]byte("success"))
+	br, _ := json.Marshal(res)
+	w.Write(br)
 	return
 }
 
 func (s *Service) getBook(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	_, err := s.persistClient.GetBook(ctx, &pb.GetBookRequest{})
+	res, err := s.persistClient.GetBook(ctx, &pb.GetBookRequest{})
 	cancel()
 	if err != nil {
-		w.Write([]byte("error"))
+		e, _ := json.Marshal(err)
+		w.Write(e)
 		return
 	}
-	w.Write([]byte("success"))
+	br, _ := json.Marshal(res)
+	w.Write(br)
 	return
 }
 
 func (s *Service) createBook(w http.ResponseWriter, r *http.Request) {
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	_, err := s.persistClient.CreateBook(ctx, &pb.CreateBookRequest{})
+	res, err := s.persistClient.CreateBook(ctx, &pb.CreateBookRequest{})
 	cancel()
 	if err != nil {
-		w.Write([]byte("error"))
+		e, _ := json.Marshal(err)
+		w.Write(e)
 		return
 	}
-	w.Write([]byte("success"))
+	br, _ := json.Marshal(res)
+	w.Write(br)
 	return
 }

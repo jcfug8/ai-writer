@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+    ai:
+        image: jcfug8/ai_writer:ai_latest
+    control:
+        image: jcfug8/ai_writer:control_latest
+        ports:
+            - 80:80
+    persist:
+        image: jcfug8/ai_writer:persist_latest
+    db:
+        image: mysql:latest
+        environment:
+            MYSQL_ROOT_PASSWORD: root_password
+            MYSQL_DATABASE: ai_writer
+            MYSQL_USER: ai_writer
+            MYSQL_PASSWORD: ai_writer
