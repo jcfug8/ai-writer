@@ -46,3 +46,8 @@ persist: build_protos ./services/persist/cmd/*.go ./services/persist/service/*.g
 
 build_protos: ./protos/entities.proto
 	protoc -I=protos --go_out=plugins=grpc:protos protos/entities.proto 
+
+# CLEAN
+
+clean:
+	rm protos/entities.pb.go services/control/control_binary services/ai/ai_binary services/persist/persist_binary

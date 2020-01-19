@@ -2,6 +2,7 @@ syntax = "proto3";
 package protos;
 
 service Persist {
+    rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
     rpc GetUser (GetUserRequest) returns (GetUserReply);
     rpc GetBook (GetBookRequest) returns (GetBookReply);
     rpc CreateBook (CreateBookRequest) returns (CreateBookReply);
@@ -13,6 +14,15 @@ service Control {
 
 service AI {
 
+}
+
+message CreateUserRequest {
+    string email    = 1;
+    string password = 2;
+}
+
+message CreateUserReply {
+    
 }
 
 message GetUserRequest {

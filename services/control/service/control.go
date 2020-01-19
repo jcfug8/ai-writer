@@ -41,6 +41,7 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 	}
 
 	// set up api routes
+	s.router.Methods("POST").Path("/api/user").HandlerFunc(s.createUser)
 	s.router.Methods("GET").Path("/api/user").HandlerFunc(s.getUser)
 	s.router.Methods("GET").Path("/api/book").HandlerFunc(s.getBook)
 	s.router.Methods("POST").Path("/api/book").HandlerFunc(s.createBook)
@@ -48,6 +49,9 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 	// set up static file routes
 	s.router.Methods("GET").PathPrefix("/assets/").Handler(s.fileServer)
 	s.router.Methods("GET").Path("/").HandlerFunc(s.serveIndex)
+
+	// options
+	s.router.Methods("OPTIONS").HandlerFunc(s.options)
 
 	// set up http server
 	s.httpServer = &http.Server{
@@ -66,48 +70,102 @@ func (s *Service) Serve() error {
 	return s.httpServer.ListenAndServe()
 }
 
+func (s *Service) options(w http.ResponseWriter, r *http.Request) {
+	log.Info("Options Hit")
+}
+
 func (s *Service) serveIndex(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, filepath.Join(s.opts.AssetsDir, "index.html"))
 	return
 }
 
-func (s *Service) getUser(w http.ResponseWriter, r *http.Request) {
+func (s *Service) createUser(w http.ResponseWriter, r *http.Request) {
+	req := &pb.CreateUserRequest{}
+	err := json.NewDecoder(r.Body).Decode(req)
+	if err != nil {
+		e, _ := json.Marshal(err)
+		w.Write(e)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	res, err := s.persistClient.GetUser(ctx, &pb.GetUserRequest{})
+	res, err := s.persistClient.CreateUser(ctx, req)
 	cancel()
 	if err != nil {
 		e, _ := json.Marshal(err)
 		w.Write(e)
 		return
 	}
+
+	br, _ := json.Marshal(res)
+	w.Write(br)
+	return
+}
+
+func (s *Service) getUser(w http.ResponseWriter, r *http.Request) {
+	req := &pb.GetUserRequest{}
+	err := json.NewDecoder(r.Body).Decode(req)
+	if err != nil {
+		e, _ := json.Marshal(err)
+		w.Write(e)
+		return
+	}
+
+	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
+	res, err := s.persistClient.GetUser(ctx, req)
+	cancel()
+	if err != nil {
+		e, _ := json.Marshal(err)
+		w.Write(e)
+		return
+	}
+
 	br, _ := json.Marshal(res)
 	w.Write(br)
 	return
 }
 
 func (s *Service) getBook(w http.ResponseWriter, r *http.Request) {
+	req := &pb.GetBookRequest{}
+	err := json.NewDecoder(r.Body).Decode(req)
+	if err != nil {
+		e, _ := json.Marshal(err)
+		w.Write(e)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	res, err := s.persistClient.GetBook(ctx, &pb.GetBookRequest{})
+	res, err := s.persistClient.GetBook(ctx, req)
 	cancel()
 	if err != nil {
 		e, _ := json.Marshal(err)
 		w.Write(e)
 		return
 	}
+
 	br, _ := json.Marshal(res)
 	w.Write(br)
 	return
 }
 
 func (s *Service) createBook(w http.ResponseWriter, r *http.Request) {
+	req := &pb.CreateBookRequest{}
+	err := json.NewDecoder(r.Body).Decode(req)
+	if err != nil {
+		e, _ := json.Marshal(err)
+		w.Write(e)
+		return
+	}
+
 	ctx, cancel := context.WithTimeout(r.Context(), time.Millisecond*500)
-	res, err := s.persistClient.CreateBook(ctx, &pb.CreateBookRequest{})
+	res, err := s.persistClient.CreateBook(ctx, req)
 	cancel()
 	if err != nil {
 		e, _ := json.Marshal(err)
 		w.Write(e)
 		return
 	}
+
 	br, _ := json.Marshal(res)
 	w.Write(br)
 	return
