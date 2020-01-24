@@ -4,6 +4,7 @@ package protos;
 service Persist {
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
     rpc GetUser (GetUserRequest) returns (GetUserReply);
+    rpc GetUserAuthenticate (GetUserAuthenticateRequest) returns (GetUserAuthenticateReply);
     rpc GetBook (GetBookRequest) returns (GetBookReply);
     rpc CreateBook (CreateBookRequest) returns (CreateBookReply);
 }
@@ -31,6 +32,16 @@ message GetUserRequest {
 
 message GetUserReply {
     
+}
+
+message GetUserAuthenticateRequest {
+    string email    = 1;
+    string password = 2;
+}
+
+message GetUserAuthenticateReply {
+    int64 id     = 1;
+    string email = 2;
 }
 
 message GetBookRequest {

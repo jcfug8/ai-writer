@@ -3,14 +3,14 @@ package service
 import (
 	"context"
 	"database/sql"
-	"fmt"
 	"net"
+	"net/http"
 
+	"github.com/jcfug8/ai-writer/commons/errors"
 	pb "github.com/jcfug8/ai-writer/protos"
 
+	"golang.org/x/crypto/bcrypt"
 	"google.golang.org/grpc"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -57,27 +57,14 @@ func (s *Service) RegisterDatabase(db *sql.DB) {
 	s.db = db
 }
 
+// TODO: organize this better and add logs
 func (s *Service) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserReply, error) {
 	log.Infof("Creating User: req - %+v", req)
-
-	// validate data
-	validationErrs := []string{}
-	if req.GetEmail() == "" {
-		validationErrs = append(validationErrs, "invalid email")
-	}
-
-	if req.GetPassword() == "" {
-		validationErrs = append(validationErrs, "invalid password")
-	}
-
-	if len(validationErrs) != 0 {
-		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("%v", validationErrs))
-	}
 
 	// begin transaction
 	tx, err := s.db.Begin()
 	if err != nil {
-		return nil, status.Error(codes.Unavailable, fmt.Sprintf("could not create transaction: %s", err))
+		return nil, errors.New(http.StatusInternalServerError, "could not create database transaction")
 	}
 
 	// check for conflicting email
@@ -86,17 +73,20 @@ func (s *Service) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*p
 	if err = rows.Scan(&id); err != sql.ErrNoRows {
 		tx.Rollback()
 		errMsg := "Email is already registered"
-		if err != nil {
-			errMsg = errMsg + ": " + err.Error()
-		}
-		return nil, status.Error(codes.AlreadyExists, errMsg)
+		return nil, errors.New(http.StatusConflict, errMsg)
 	}
 
-	// insert users
-	_, err = tx.ExecContext(ctx, "INSERT INTO users(email, hashed_password) VALUES(?, ?)", req.GetEmail(), req.GetPassword())
+	// insert user
+	hash, err := bcrypt.GenerateFromPassword([]byte(req.GetPassword()), 10)
 	if err != nil {
 		tx.Rollback()
-		return nil, status.Error(codes.Unavailable, fmt.Sprintf("could not insert user: %s", err))
+		return nil, errors.New(http.StatusInternalServerError, "could not hash password")
+	}
+
+	_, err = tx.ExecContext(ctx, "INSERT INTO users(email, hashed_password) VALUES(?, ?)", req.GetEmail(), hash)
+	if err != nil {
+		tx.Rollback()
+		return nil, errors.New(http.StatusInternalServerError, "could not insert user")
 	}
 
 	// finish
@@ -106,15 +96,35 @@ func (s *Service) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*p
 
 func (s *Service) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.GetUserReply, error) {
 	log.Infof("Getting User: req - %+v", req)
-	return nil, status.Error(codes.Unimplemented, "unimplemented")
+	return nil, errors.New(http.StatusNotImplemented, "unimplemented")
+}
+
+func (s *Service) GetUserAuthenticate(ctx context.Context, req *pb.GetUserAuthenticateRequest) (*pb.GetUserAuthenticateReply, error) {
+	rows := s.db.QueryRowContext(ctx, "SELECT id, hashed_password FROM users WHERE email = ?", req.GetEmail())
+	var id int64
+	var hashedPassword string
+	err := rows.Scan(&id, &hashedPassword)
+
+	if err != nil {
+		return nil, errors.New(http.StatusUnauthorized, "unable to authenticate")
+	}
+
+	if err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(req.GetPassword())); err != nil {
+		return nil, errors.New(http.StatusUnauthorized, "not able to authenticate")
+	}
+
+	return &pb.GetUserAuthenticateReply{
+		Id:    id,
+		Email: req.GetEmail(),
+	}, nil
 }
 
 func (s *Service) GetBook(ctx context.Context, req *pb.GetBookRequest) (*pb.GetBookReply, error) {
 	log.Infof("Getting Book: req - %+v", req)
-	return nil, status.Error(codes.Unimplemented, "unimplemented")
+	return nil, errors.New(http.StatusNotImplemented, "unimplemented")
 }
 
 func (s *Service) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*pb.CreateBookReply, error) {
 	log.Infof("Creating Book: req - %+v", req)
-	return nil, status.Error(codes.Unimplemented, "unimplemented")
+	return nil, errors.New(http.StatusNotImplemented, "unimplemented")
 }
