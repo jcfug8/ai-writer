@@ -3,8 +3,8 @@ package protos;
 
 service Persist {
     rpc CreateUser (CreateUserRequest) returns (CreateUserReply);
-    rpc GetUser (GetUserRequest) returns (GetUserReply);
-    rpc GetUserAuthenticate (GetUserAuthenticateRequest) returns (GetUserAuthenticateReply);
+    rpc GetUser (GetUserRequest) returns (UserData);
+    rpc GetUserAuthenticate (GetUserAuthenticateRequest) returns (UserData);
     rpc GetBook (GetBookRequest) returns (GetBookReply);
     rpc CreateBook (CreateBookRequest) returns (CreateBookReply);
 }
@@ -27,11 +27,7 @@ message CreateUserReply {
 }
 
 message GetUserRequest {
-
-}
-
-message GetUserReply {
-    
+    int64 id = 1;
 }
 
 message GetUserAuthenticateRequest {
@@ -39,8 +35,8 @@ message GetUserAuthenticateRequest {
     string password = 2;
 }
 
-message GetUserAuthenticateReply {
-    int64 id     = 1;
+message UserData {
+    int64 id = 1;
     string email = 2;
 }
 
