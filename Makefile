@@ -12,7 +12,7 @@ build_all: ai control persist
 # AI
 
 docker_ai: ai
-	docker build -t jcfug8/ai_writer:ai_latest -f services/ai/Dockerfile .
+	docker build -t jcfug8/ai_writer:ai_latest services/ai/
 
 run_ai: ai
 	services/ai/ai_binary
@@ -23,7 +23,7 @@ ai: build_protos ./services/ai/cmd/*.go
 # CONTROL
 
 docker_control: control
-	docker build -t jcfug8/ai_writer:control_latest -f services/control/Dockerfile .
+	docker build -t jcfug8/ai_writer:control_latest services/control/
 
 run_control: control
 	services/control/control_binary
@@ -34,7 +34,7 @@ control: build_protos ./services/control/cmd/*.go ./services/control/service/*.g
 # PERSIST
 
 docker_persist: persist
-	docker build -t jcfug8/ai_writer:persist_latest -f services/persist/Dockerfile .
+	docker build -t jcfug8/ai_writer:persist_latest services/persist/
 
 run_persist: persist
 	services/persist/persist_binary

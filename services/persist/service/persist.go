@@ -85,7 +85,14 @@ func (s *Service) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*p
 		return nil, errors.New(http.StatusInternalServerError, "could not hash password")
 	}
 
-	_, err = tx.ExecContext(ctx, "INSERT INTO users(email, hashed_password) VALUES(?, ?)", req.GetEmail(), hash)
+	_, err = tx.ExecContext(
+		ctx,
+		"INSERT INTO users(firstname, lastname, email, hashed_password) VALUES(?, ?, ?, ?)",
+		req.GetFirstname(),
+		req.GetLastname(),
+		req.GetEmail(),
+		hash,
+	)
 	if err != nil {
 		tx.Rollback()
 		log.Errorf("unable to insert user: %s", err)
@@ -99,11 +106,13 @@ func (s *Service) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*p
 
 // GetUser - Selects a user by the id given
 func (s *Service) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.UserData, error) {
-	rows := s.db.QueryRowContext(ctx, "SELECT id, email FROM users WHERE id = ?", req.GetId())
+	rows := s.db.QueryRowContext(ctx, "SELECT id, email, firstname, lastname FROM users WHERE id = ?", req.GetId())
 	var id int64
 	var email string
+	var firstname string
+	var lastname string
 
-	if err := rows.Scan(&id, &email); err == sql.ErrNoRows {
+	if err := rows.Scan(&id, &email, &firstname, &lastname); err == sql.ErrNoRows {
 		log.Infof("row was not found when getting user %d: %s", req.GetId(), err)
 		return nil, errors.New(http.StatusNotFound, "user not found")
 	} else if err != nil {
@@ -112,17 +121,21 @@ func (s *Service) GetUser(ctx context.Context, req *pb.GetUserRequest) (*pb.User
 	}
 
 	return &pb.UserData{
-		Id:    id,
-		Email: email,
+		Id:        id,
+		Email:     email,
+		Firstname: firstname,
+		Lastname:  lastname,
 	}, nil
 }
 
 // GetUserAuthenticate - Gets a users by email and password
 func (s *Service) GetUserAuthenticate(ctx context.Context, req *pb.GetUserAuthenticateRequest) (*pb.UserData, error) {
-	rows := s.db.QueryRowContext(ctx, "SELECT id, hashed_password FROM users WHERE email = ?", req.GetEmail())
+	rows := s.db.QueryRowContext(ctx, "SELECT id, hashed_password, firstname, lastname FROM users WHERE email = ?", req.GetEmail())
 	var id int64
 	var hashedPassword string
-	err := rows.Scan(&id, &hashedPassword)
+	var firstname string
+	var lastname string
+	err := rows.Scan(&id, &hashedPassword, &firstname, &lastname)
 
 	if err != nil {
 		log.Infof("errored finding user with email %s: %s", req.GetEmail(), err)
@@ -135,8 +148,10 @@ func (s *Service) GetUserAuthenticate(ctx context.Context, req *pb.GetUserAuthen
 	}
 
 	return &pb.UserData{
-		Id:    id,
-		Email: req.GetEmail(),
+		Id:        id,
+		Email:     req.GetEmail(),
+		Firstname: firstname,
+		Lastname:  lastname,
 	}, nil
 }
 

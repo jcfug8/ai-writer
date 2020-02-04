@@ -18,8 +18,10 @@ service AI {
 }
 
 message CreateUserRequest {
-    string email    = 1;
-    string password = 2;
+    string email     = 1;
+    string password  = 2;
+    string firstname = 3;
+    string lastname  = 4;
 }
 
 message CreateUserReply {
@@ -36,8 +38,10 @@ message GetUserAuthenticateRequest {
 }
 
 message UserData {
-    int64 id = 1;
-    string email = 2;
+    int64 id         = 1;
+    string email     = 2;
+    string firstname = 3;
+    string lastname  = 4;
 }
 
 message GetBookRequest {

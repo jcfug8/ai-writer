@@ -16,6 +16,8 @@ var (
 						id INT 		auto_increment, 
 						email 		VARCHAR(255) NOT NULL UNIQUE,
 						hashed_password CHAR(60) NOT NULL,
+						firstname VARCHAR(255) NOT NULL,
+						lastname VARCHAR(255) NOT NULL,
 						PRIMARY KEY (id)
 					 ) ENGINE=InnoDB CHARACTER SET=utf8;`,
 		},

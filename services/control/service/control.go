@@ -62,6 +62,8 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 		sessionStore:  sessions.NewCookieStore([]byte("TEST_KEY")),
 	}
 
+	s.router.Use(s.genaralMiddleware)
+
 	// set up api routes
 	s.router.Methods("POST").Path("/api/session").HandlerFunc(s.createAuthenticatedSession)
 	s.router.Methods("DELETE").Path("/api/session").HandlerFunc(s.deleteAuthenticatedSession)
@@ -92,6 +94,18 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 func (s *Service) Serve() error {
 	log.Infof("serving control at %s", s.opts.Addr)
 	return s.httpServer.ListenAndServe()
+}
+
+func (s *Service) genaralMiddleware(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:8080")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, GET, OPTIONS, PUT, DELETE")
+		w.Header().Set("Access-Control-Allow-Headers",
+			"Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
+		next.ServeHTTP(w, r)
+	})
 }
 
 func getRequestData(w http.ResponseWriter, r *http.Request, req interface{}) error {

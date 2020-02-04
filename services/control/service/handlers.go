@@ -19,14 +19,17 @@ func (s *Service) serveIndex(w http.ResponseWriter, r *http.Request) {
 
 func (s *Service) options(w http.ResponseWriter, r *http.Request) {
 	log.Info("Options Hit")
+	w.Write([]byte("{}"))
 }
 
 func (s *Service) createAuthenticatedSession(w http.ResponseWriter, r *http.Request) {
+	log.Info("logging in")
 	req := &pb.GetUserAuthenticateRequest{}
 	res := &pb.UserData{}
 
 	// authenticate
 	if userData, err := s.getUserData(w, r); userData != nil || err != nil {
+		replies.Write(w, http.StatusCreated, userData)
 		return
 	}
 
@@ -65,7 +68,7 @@ func (s *Service) createAuthenticatedSession(w http.ResponseWriter, r *http.Requ
 	session.Values[userDataKey] = res
 	session.Save(r, w)
 
-	replies.Write(w, http.StatusCreated, map[string]string{})
+	replies.Write(w, http.StatusCreated, res)
 }
 
 func (s *Service) deleteAuthenticatedSession(w http.ResponseWriter, r *http.Request) {
@@ -99,6 +102,14 @@ func (s *Service) createUser(w http.ResponseWriter, r *http.Request) {
 
 	if req.GetPassword() == "" {
 		validationErrs = append(validationErrs, "invalid password")
+	}
+
+	if req.GetFirstname() == "" {
+		validationErrs = append(validationErrs, "firstname cannot be empty")
+	}
+
+	if req.GetLastname() == "" {
+		validationErrs = append(validationErrs, "lastname cannot be empty")
 	}
 
 	if len(validationErrs) != 0 {
