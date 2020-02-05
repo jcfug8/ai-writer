@@ -45,17 +45,22 @@ message UserData {
 }
 
 message GetBookRequest {
-
+    int64 id = 1;
 }
 
 message GetBookReply {
-    
+    int64 id           = 1;
+    string name        = 2;
+    string description = 3;
+    string body        = 4;
 }
 
 message CreateBookRequest {
-
+    string name        = 1;
+    string description = 2;
+    string body        = 3;
 }
 
 message CreateBookReply {
-    
+    int64 id = 1;
 }

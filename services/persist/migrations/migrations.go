@@ -21,6 +21,17 @@ var (
 						PRIMARY KEY (id)
 					 ) ENGINE=InnoDB CHARACTER SET=utf8;`,
 		},
+		{
+			Version:     1.1,
+			Description: "Creating table books",
+			Script: `CREATE TABLE books (
+						id INT 		auto_increment, 
+						name 		VARCHAR(255) NOT NULL,
+						description VARCHAR(255) NOT NULL,
+						body MEDIUMTEXT NOT NULL,
+						PRIMARY KEY (id)
+					 ) ENGINE=InnoDB CHARACTER SET=utf8;`,
+		},
 	}
 )
 

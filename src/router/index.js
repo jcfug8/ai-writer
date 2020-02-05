@@ -20,9 +20,27 @@ const routes = [
   },
   {
     path: "/books",
-    name: "books",
+    // name: "books",
     component: () =>
-      import(/* webpackChunkName: "books" */ "../views/Books.vue")
+      import(/* webpackChunkName: "books" */ "../views/Books.vue"),
+    children: [
+      {
+        path: "/",
+        name: "books",
+        component: () =>
+          import(
+            /* webpackChunkName: "books list" */ "../components/BookList.vue"
+          )
+      },
+      {
+        path: "edit",
+        name: "edit book",
+        component: () =>
+          import(
+            /* webpackChunkName: "books edit" */ "../components/BookEdit.vue"
+          )
+      }
+    ]
   }
 ];
 

@@ -1,5 +1,9 @@
 <template>
-  <div id="books"></div>
+  <div id="books">
+    <div class="container">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script>
@@ -7,6 +11,7 @@
 
 export default {
   name: "books",
-  components: {}
+  components: {},
+  methods: {}
 };
 </script>
