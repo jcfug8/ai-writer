@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"net/http"
 	"path/filepath"
+	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/jcfug8/ai-writer/commons/errors"
 	"github.com/jcfug8/ai-writer/commons/replies"
 	pb "github.com/jcfug8/ai-writer/protos"
@@ -41,17 +43,15 @@ func (s *Service) createAuthenticatedSession(w http.ResponseWriter, r *http.Requ
 	}
 
 	// validate data
-	validationErrs := []string{}
-	if req.GetEmail() == "" {
-		validationErrs = append(validationErrs, "invalid email")
-	}
+	if ok := errors.Validate(w, func(errs *errors.ValidationErrors) {
+		if req.GetEmail() == "" {
+			errs.Add("invalid email")
+		}
 
-	if req.GetPassword() == "" {
-		validationErrs = append(validationErrs, "invalid password")
-	}
-
-	if len(validationErrs) != 0 {
-		errors.Write(w, http.StatusBadRequest, validationErrs...)
+		if req.GetPassword() == "" {
+			errs.Add("invalid password")
+		}
+	}); !ok {
 		return
 	}
 
@@ -83,6 +83,18 @@ func (s *Service) deleteAuthenticatedSession(w http.ResponseWriter, r *http.Requ
 	s.sessionStore.Save(r, w, session)
 }
 
+func (s *Service) isLoggedIn(w http.ResponseWriter, r *http.Request) {
+	session, err := s.sessionStore.Get(r, sessionName)
+	if err != nil {
+		log.Errorf("errored while getting session data to check if logged in: %s", err)
+		errors.Write(w, http.StatusInternalServerError, "error checking if logged in")
+		return
+	}
+
+	data, _ := session.Values[userDataKey]
+	replies.Write(w, http.StatusOK, data)
+}
+
 func (s *Service) createUser(w http.ResponseWriter, r *http.Request) {
 	var err error
 	req := &pb.CreateUserRequest{}
@@ -95,25 +107,23 @@ func (s *Service) createUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// validate data
-	validationErrs := []string{}
-	if req.GetEmail() == "" {
-		validationErrs = append(validationErrs, "invalid email")
-	}
+	if ok := errors.Validate(w, func(errs *errors.ValidationErrors) {
+		if req.GetEmail() == "" {
+			errs.Add("invalid email")
+		}
 
-	if req.GetPassword() == "" {
-		validationErrs = append(validationErrs, "invalid password")
-	}
+		if req.GetPassword() == "" {
+			errs.Add("invalid password")
+		}
 
-	if req.GetFirstname() == "" {
-		validationErrs = append(validationErrs, "firstname cannot be empty")
-	}
+		if req.GetFirstname() == "" {
+			errs.Add("firstname cannot be empty")
+		}
 
-	if req.GetLastname() == "" {
-		validationErrs = append(validationErrs, "lastname cannot be empty")
-	}
-
-	if len(validationErrs) != 0 {
-		errors.Write(w, http.StatusBadRequest, validationErrs...)
+		if req.GetLastname() == "" {
+			errs.Add("lastname cannot be empty")
+		}
+	}); !ok {
 		return
 	}
 
@@ -166,14 +176,48 @@ func (s *Service) getBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get request data
-	if err = getRequestData(w, r, req); err != nil {
-		log.Errorf("unable to parse get book request: %s", err)
+	vars := mux.Vars(r)
+	stringID := vars["id"]
+
+	// validate data
+	if ok := errors.Validate(w, func(errs *errors.ValidationErrors) {
+		req.Id, err = strconv.ParseInt(stringID, 10, 64)
+		if err != nil {
+			errs.Add("book id must be a number")
+		}
+	}); !ok {
 		return
 	}
 
+	req.UserId = userData.GetId()
+
 	forwardUnaryRequest(w, r, func(ctx context.Context) error {
 		res, err = s.persistClient.GetBook(ctx, req)
+		return err
+	})
+	if err != nil {
+		log.Errorf("persist get book request failed: %s", err)
+		return
+	}
+
+	replies.Write(w, http.StatusOK, res)
+}
+
+func (s *Service) getBooks(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var userData *pb.UserData
+	req := &pb.ListBooksRequest{}
+	res := &pb.ListBooksReply{}
+
+	// authenticate
+	if userData = s.authenticate(w, r); userData == nil {
+		return
+	}
+
+	req.UserId = userData.GetId()
+
+	forwardUnaryRequest(w, r, func(ctx context.Context) error {
+		res, err = s.persistClient.ListBooks(ctx, req)
 		return err
 	})
 	if err != nil {
@@ -195,11 +239,7 @@ func (s *Service) createBook(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// get request data
-	if err = getRequestData(w, r, req); err != nil {
-		log.Errorf("unable to parse get book request: %s", err)
-		return
-	}
+	req.UserId = userData.GetId()
 
 	forwardUnaryRequest(w, r, func(ctx context.Context) error {
 		res, err = s.persistClient.CreateBook(ctx, req)
@@ -211,4 +251,66 @@ func (s *Service) createBook(w http.ResponseWriter, r *http.Request) {
 	}
 
 	replies.Write(w, http.StatusCreated, res)
+}
+
+func (s *Service) updateBook(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var userData *pb.UserData
+	req := &pb.UpdateBookRequest{}
+	res := &pb.UpdateBookReply{}
+
+	// authenticate
+	if userData = s.authenticate(w, r); userData == nil {
+		return
+	}
+
+	req.UserId = userData.GetId()
+
+	// get request data
+	if err = getRequestData(w, r, req); err != nil {
+		log.Errorf("unable to parse update book request: %s", err)
+		return
+	}
+
+	forwardUnaryRequest(w, r, func(ctx context.Context) error {
+		res, err = s.persistClient.UpdateBook(ctx, req)
+		return err
+	})
+	if err != nil {
+		log.Errorf("persist update book request failed: %s", err)
+		return
+	}
+
+	replies.Write(w, http.StatusOK, res)
+}
+
+func (s *Service) deleteBook(w http.ResponseWriter, r *http.Request) {
+	var err error
+	var userData *pb.UserData
+	req := &pb.DeleteBookRequest{}
+	res := &pb.DeleteBookReply{}
+
+	// authenticate
+	if userData = s.authenticate(w, r); userData == nil {
+		return
+	}
+
+	req.UserId = userData.GetId()
+
+	// get request data
+	if err = getRequestData(w, r, req); err != nil {
+		log.Errorf("unable to parse delete book request: %s", err)
+		return
+	}
+
+	forwardUnaryRequest(w, r, func(ctx context.Context) error {
+		res, err = s.persistClient.DeleteBook(ctx, req)
+		return err
+	})
+	if err != nil {
+		log.Errorf("persist delete book request failed: %s", err)
+		return
+	}
+
+	replies.Write(w, http.StatusOK, res)
 }

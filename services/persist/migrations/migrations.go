@@ -26,6 +26,7 @@ var (
 			Description: "Creating table books",
 			Script: `CREATE TABLE books (
 						id INT 		auto_increment, 
+						user_id INT NOT NULL,
 						name 		VARCHAR(255) NOT NULL,
 						description VARCHAR(255) NOT NULL,
 						body MEDIUMTEXT NOT NULL,

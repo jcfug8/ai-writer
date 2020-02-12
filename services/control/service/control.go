@@ -67,9 +67,13 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 	// set up api routes
 	s.router.Methods("POST").Path("/api/session").HandlerFunc(s.createAuthenticatedSession)
 	s.router.Methods("DELETE").Path("/api/session").HandlerFunc(s.deleteAuthenticatedSession)
+	s.router.Methods("GET").Path("/api/session").HandlerFunc(s.isLoggedIn)
 	s.router.Methods("POST").Path("/api/user").HandlerFunc(s.createUser)
 	s.router.Methods("GET").Path("/api/user").HandlerFunc(s.getUser)
-	s.router.Methods("GET").Path("/api/book").HandlerFunc(s.getBook)
+	s.router.Methods("GET").Path("/api/book/{id}").HandlerFunc(s.getBook)
+	s.router.Methods("GET").Path("/api/books").HandlerFunc(s.getBooks)
+	s.router.Methods("DELETE").Path("/api/book").HandlerFunc(s.deleteBook)
+	s.router.Methods("PUT").Path("/api/book").HandlerFunc(s.updateBook)
 	s.router.Methods("POST").Path("/api/book").HandlerFunc(s.createBook)
 
 	// set up static file routes

@@ -8,6 +8,22 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+type ValidationErrors struct {
+	errs []string
+}
+
+func (v *ValidationErrors) Add(err string) {
+	v.errs = append(v.errs, err)
+}
+
+func (v *ValidationErrors) HasErrors() bool {
+	return len(v.errs) != 0
+}
+
+func (v *ValidationErrors) GetErrors() []string {
+	return v.errs
+}
+
 // Error -
 type Error struct {
 	StatusText string   `json:"status_text"`
@@ -58,4 +74,19 @@ func WriteFromError(w http.ResponseWriter, grpcError error) {
 func Write(w http.ResponseWriter, httpStatus int, messages ...string) {
 	w.WriteHeader(httpStatus)
 	w.Write(New(httpStatus, messages...).Bytes())
+}
+
+// Write - uses a user defined function to validate
+func Validate(w http.ResponseWriter, f func(errs *ValidationErrors)) bool {
+	errs := &ValidationErrors{
+		errs: []string{},
+	}
+
+	f(errs)
+	if !errs.HasErrors() {
+		return true
+	}
+
+	Write(w, http.StatusBadRequest, errs.GetErrors()...)
+	return false
 }

@@ -157,12 +157,124 @@ func (s *Service) GetUserAuthenticate(ctx context.Context, req *pb.GetUserAuthen
 
 // GetBook -
 func (s *Service) GetBook(ctx context.Context, req *pb.GetBookRequest) (*pb.GetBookReply, error) {
-	log.Infof("Getting Book: req - %+v", req)
-	return nil, errors.New(http.StatusNotImplemented, "unimplemented")
+	rows := s.db.QueryRowContext(ctx, "SELECT id, name, description, body FROM books WHERE id = ? AND user_id = ?", req.GetId(), req.GetUserId())
+	reply := &pb.GetBookReply{}
+
+	if err := rows.Scan(&reply.Id, &reply.Name, &reply.Description, &reply.Body); err == sql.ErrNoRows {
+		log.Infof("book %d was not found for user %d: %s", req.GetId(), req.GetUserId(), err)
+		return nil, errors.New(http.StatusNotFound, "book not found")
+	} else if err != nil {
+		log.Infof("book %d was not found for user %d: %s", req.GetId(), req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "error retrieving book")
+	}
+
+	return reply, nil
+}
+
+// ListBooks -
+func (s *Service) ListBooks(ctx context.Context, req *pb.ListBooksRequest) (*pb.ListBooksReply, error) {
+	rows, err := s.db.QueryContext(ctx, "SELECT id, name, description FROM books WHERE user_id = ?", req.GetUserId())
+
+	if err != nil {
+		log.Infof("unable to query for books for user %d: %s", req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "unable get books list")
+	}
+	defer rows.Close()
+
+	books := []*pb.ListBook{}
+
+	for rows.Next() {
+		book := &pb.ListBook{}
+		err = rows.Scan(&book.Id, &book.Name, &book.Description)
+		if err != nil {
+			log.Infof("error scaning over books for user %d: %s", req.GetUserId(), err)
+			return nil, errors.New(http.StatusInternalServerError, "error scanning over book list")
+		}
+		books = append(books, book)
+	}
+
+	err = rows.Err()
+	if err != nil {
+		log.Infof("erros after scanning books for user %d: %s", req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "error after scanning for book list")
+	}
+
+	return &pb.ListBooksReply{
+		Books: books,
+	}, nil
 }
 
 // CreateBook -
 func (s *Service) CreateBook(ctx context.Context, req *pb.CreateBookRequest) (*pb.CreateBookReply, error) {
-	log.Infof("Creating Book: req - %+v", req)
-	return nil, errors.New(http.StatusNotImplemented, "unimplemented")
+	// begin transaction
+	tx, err := s.db.Begin()
+	if err != nil {
+		return nil, errors.New(http.StatusInternalServerError, "could not create database transaction")
+	}
+
+	res, err := tx.ExecContext(
+		ctx,
+		"INSERT INTO books(user_id, name, description, body) VALUES(?, ?, ?, ?)",
+		req.GetUserId(),
+		"Untitled",
+		"",
+		"",
+	)
+	if err != nil {
+		tx.Rollback()
+		log.Errorf("unable to create book for user %d: %s", req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "could not create book")
+	}
+
+	id, err := res.LastInsertId()
+	if err != nil {
+		tx.Rollback()
+		log.Errorf("unable to retrieve id of book created for user %d: %s", req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "could not create book")
+	}
+
+	// finish
+	tx.Commit()
+	return &pb.CreateBookReply{
+		Id: id,
+	}, nil
+}
+
+// UpdateBook -
+func (s *Service) UpdateBook(ctx context.Context, req *pb.UpdateBookRequest) (*pb.UpdateBookReply, error) {
+	log.Infof("update book - %+v", req)
+
+	_, err := s.db.ExecContext(
+		ctx,
+		"UPDATE books SET name = ?, description = ?, body = ? WHERE id = ? AND user_id = ?",
+		req.GetName(),
+		req.GetDescription(),
+		req.GetBody(),
+		req.GetId(),
+		req.GetUserId(),
+	)
+	if err != nil {
+		log.Errorf("unable to update book %s for user %d: %s", req.GetId(), req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "could not update book")
+	}
+
+	return &pb.UpdateBookReply{}, nil
+}
+
+// DeleteBook -
+func (s *Service) DeleteBook(ctx context.Context, req *pb.DeleteBookRequest) (*pb.DeleteBookReply, error) {
+	log.Infof("delete book - %+v", req)
+
+	_, err := s.db.ExecContext(
+		ctx,
+		"DELETE FROM books WHERE id = ? AND user_id = ?",
+		req.GetId(),
+		req.GetUserId(),
+	)
+	if err != nil {
+		log.Errorf("unable to delete book %s for user %d: %s", req.GetId(), req.GetUserId(), err)
+		return nil, errors.New(http.StatusInternalServerError, "could not delete book")
+	}
+
+	return &pb.DeleteBookReply{}, nil
 }

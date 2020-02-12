@@ -1,20 +1,33 @@
 <template>
   <div id="login">
-    <div class="container">
+    <div id="login-container" class="container">
       <div v-if="isLoggingIn" id="formLogin">
         <h2>Login</h2>
-        <SimpleButton v-on:click="toggle">Sign Up</SimpleButton>
-        <input v-model="loginData.email" />
-        <input v-model="loginData.password" />
+        <a v-on:click="toggle">Sign Up</a>
+        <br />
+        <input placeholder="Email" type="text" v-model="loginData.email" />
+        <br />
+        <input placeholder="Password" type="password" v-model="loginData.password" />
+        <br />
         <SimpleButton v-on:click="login">Submit</SimpleButton>
       </div>
       <div v-else id="formNewUser">
         <h2>New User</h2>
-        <SimpleButton v-on:click="toggle">Login</SimpleButton>
-        <input v-model="signupData.firstname" />
-        <input v-model="signupData.lastname" />
-        <input v-model="signupData.email" />
-        <input v-model="signupData.password" />
+        <br />
+        <a v-on:click="toggle">Login</a>
+        <br />
+        <input placeholder="Firstname" type="text" v-model="signupData.firstname" />
+        <br />
+        <input placeholder="Last" type="text" v-model="signupData.lastname" />
+        <br />
+        <br />
+        <input placeholder="Email" type="text" v-model="signupData.email" />
+        <br />
+        <br />
+        <input placeholder="Password" type="password" v-model="signupData.password" />
+        <br />
+        <input placeholder="Repeat Password" type="password" v-model="signupData.password" />
+        <br />
         <SimpleButton v-on:click="singup">Submit</SimpleButton>
       </div>
     </div>
@@ -119,3 +132,41 @@ export default {
   }
 };
 </script>
+
+<style>
+#login-container {
+  margin-top: 20px;
+  text-align: center;
+}
+#login-container > div {
+  display: inline-block;
+  margin: auto;
+  text-align: center;
+  border: 1px solid #f1f1f1;
+  box-shadow: 1px 1px 2px 0px #e5e5e5;
+  box-sizing: border-box;
+  border-radius: 5px;
+  padding: 0 20px 20px 20px;
+}
+input[type="text"],
+input[type="password"] {
+  border-radius: 3px;
+  border: 1px solid #dfdfdf;
+  padding: 5px;
+  border-style: inherit;
+  margin-top: 5px;
+}
+#login-container h2 {
+  margin-bottom: 5px;
+}
+#login-container a {
+  font-size: 0.8rem;
+  text-decoration: underline;
+  display: inline-block;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+#login-container button {
+  margin-top: 10px;
+}
+</style>
