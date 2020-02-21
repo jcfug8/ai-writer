@@ -1,5 +1,8 @@
-FROM alpine:latest
+FROM tensorflow/tensorflow:1.12.0-py3
 
-COPY ai_binary /usr/bin/
+COPY ./service app
 
-CMD ["ai_binary"]
+RUN pip install grpcio-tools
+RUN pip3 install -r app/requirements.txt
+WORKDIR app/
+CMD ["python", "ai.py"]

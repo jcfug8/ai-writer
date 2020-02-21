@@ -13,7 +13,7 @@ service Persist {
 }
 
 service AI {
-
+    rpc GetSimpleGeneration(GetSimpleGenerationRequest) returns (GetSimpleGenerationReply);
 }
 
 message CreateUserRequest {
@@ -93,3 +93,11 @@ message DeleteBookRequest {
 }
 
 message DeleteBookReply {}
+
+message GetSimpleGenerationRequest{
+    string seed_text = 1;
+}
+
+message GetSimpleGenerationReply{
+    repeated string messages = 1;
+}

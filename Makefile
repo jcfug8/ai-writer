@@ -7,18 +7,12 @@ docker_compose_run_d: docker_all
 
 docker_all: docker_ai docker_persist docker_control
 
-build_all: ai control persist
+build_all: control persist
 
 # AI
 
-docker_ai: ai
+docker_ai: build_protos
 	docker build -t jcfug8/ai_writer:ai_latest services/ai/
-
-run_ai: ai
-	services/ai/ai_binary
-
-ai: build_protos ./services/ai/cmd/*.go
-	CGO_ENABLED=0 go build -o services/ai/ai_binary services/ai/cmd/cmd.go
 
 # CONTROL
 
@@ -45,7 +39,8 @@ persist: build_protos ./services/persist/cmd/*.go ./services/persist/service/*.g
 # PROTOS
 
 build_protos: ./protos/entities.proto
-	protoc -I=protos --go_out=plugins=grpc:protos protos/entities.proto 
+	protoc -I=protos --go_out=plugins=grpc:protos protos/entities.proto
+	python3 -m grpc_tools.protoc -I=protos --python_out=services/ai/service --grpc_python_out=services/ai/service protos/entities.proto
 
 # CLEAN
 

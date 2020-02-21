@@ -49,16 +49,18 @@ type Service struct {
 	fileServer    http.Handler
 	httpServer    *http.Server
 	persistClient pb.PersistClient
+	aiClient      pb.AIClient
 	sessionStore  sessions.Store
 }
 
 // NewService - Takes Opts and returns an initialized control service
-func NewService(p pb.PersistClient, opts *Opts) *Service {
+func NewService(p pb.PersistClient, a pb.AIClient, opts *Opts) *Service {
 	s := &Service{
 		opts:          opts,
 		router:        mux.NewRouter().StrictSlash(true),
 		fileServer:    http.FileServer(http.Dir(opts.AssetsDir)),
 		persistClient: p,
+		aiClient:      a,
 		sessionStore:  sessions.NewCookieStore([]byte("TEST_KEY")),
 	}
 
@@ -75,6 +77,7 @@ func NewService(p pb.PersistClient, opts *Opts) *Service {
 	s.router.Methods("DELETE").Path("/api/book").HandlerFunc(s.deleteBook)
 	s.router.Methods("PUT").Path("/api/book").HandlerFunc(s.updateBook)
 	s.router.Methods("POST").Path("/api/book").HandlerFunc(s.createBook)
+	s.router.Methods("POST").Path("/api/getsimple").HandlerFunc(s.getSimple)
 
 	// set up static file routes
 	s.router.Methods("GET").PathPrefix("/assets/").Handler(s.fileServer)

@@ -314,3 +314,42 @@ func (s *Service) deleteBook(w http.ResponseWriter, r *http.Request) {
 
 	replies.Write(w, http.StatusOK, res)
 }
+
+func (s *Service) getSimple(w http.ResponseWriter, r *http.Request) {
+	var err error
+	req := &pb.GetSimpleGenerationRequest{}
+	res := &pb.GetSimpleGenerationReply{}
+
+	// authenticate
+	if s.authenticate(w, r) == nil {
+		return
+	}
+
+	// get request data
+	if err = getRequestData(w, r, req); err != nil {
+		log.Errorf("unable to parse get simple generation request: %s", err)
+		return
+	}
+
+	// validate data
+	if ok := errors.Validate(w, func(errs *errors.ValidationErrors) {
+		if req.GetSeedText() == "" {
+			errs.Add("seed text can't be empty")
+		}
+	}); !ok {
+		return
+	}
+
+	log.Info("about to send get simple request")
+	forwardUnaryRequest(w, r, func(ctx context.Context) error {
+		res, err = s.aiClient.GetSimpleGeneration(context.Background(), req)
+		return err
+	})
+	if err != nil {
+		log.Errorf("persist get simple generation request failed: %s", err)
+		return
+	}
+	log.Infof("got a generation response : %+v", res)
+
+	replies.Write(w, http.StatusOK, res)
+}

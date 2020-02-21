@@ -20,7 +20,7 @@ var assetsDir string
 
 func init() {
 	flag.StringVar(&persistAddr, "persist", "127.0.0.1:50051", "Address Persist service will be reached at")
-	flag.StringVar(&aiAddr, "ai", "127.0.0.1:50052", "Address AI service will be reached at")
+	flag.StringVar(&aiAddr, "ai", "127.0.0.1:50051", "Address AI service will be reached at")
 	flag.StringVar(&addr, "a", "127.0.0.1:8080", "Address Control service will be served at")
 
 	_assetsDir, err := filepath.Abs("../../client")
@@ -47,7 +47,15 @@ func main() {
 	}
 	persistClient := pb.NewPersistClient(persistConn)
 
-	control := service.NewService(persistClient, &service.Opts{
+	// Create AI Client
+	log.Infof("creating ai connection and client at %s", aiAddr)
+	aiConn, err := grpc.Dial(aiAddr, grpc.WithInsecure())
+	if err != nil {
+		log.Fatalf("did not connect to ai client at %s: %s", aiAddr, err)
+	}
+	aiClient := pb.NewAIClient(aiConn)
+
+	control := service.NewService(persistClient, aiClient, &service.Opts{
 		Addr:      addr,
 		AssetsDir: assetsDir,
 	})
