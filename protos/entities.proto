@@ -14,6 +14,7 @@ service Persist {
 
 service AI {
     rpc GetSimpleGeneration(GetSimpleGenerationRequest) returns (GetSimpleGenerationReply);
+    rpc GetLargeGeneration(GetLargeGenerationRequest) returns (GetLargeGenerationReply);
 }
 
 message CreateUserRequest {
@@ -100,4 +101,12 @@ message GetSimpleGenerationRequest{
 
 message GetSimpleGenerationReply{
     repeated string messages = 1;
+}
+
+message GetLargeGenerationRequest{
+    string seed_text = 1;
+}
+
+message GetLargeGenerationReply{
+    string message = 1;
 }

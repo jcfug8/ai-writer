@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protos',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0e\x65ntities.proto\x12\x06protos\"Y\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"\x11\n\x0f\x43reateUserReply\"\x1c\n\x0eGetUserRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"=\n\x1aGetUserAuthenticateRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"J\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"-\n\x0eGetBookRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"K\n\x0cGetBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0c\n\x04\x62ody\x18\x04 \x01(\t\"#\n\x10ListBooksRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0eListBooksReply\x12\x1f\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x10.protos.ListBook\"9\n\x08ListBook\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"$\n\x11\x43reateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"\x1d\n\x0f\x43reateBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\"a\n\x11UpdateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\"\x11\n\x0fUpdateBookReply\"0\n\x11\x44\x65leteBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\"\x11\n\x0f\x44\x65leteBookReply\"/\n\x1aGetSimpleGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\",\n\x18GetSimpleGenerationReply\x12\x10\n\x08messages\x18\x01 \x03(\t2\x8b\x04\n\x07Persist\x12@\n\nCreateUser\x12\x19.protos.CreateUserRequest\x1a\x17.protos.CreateUserReply\x12\x33\n\x07GetUser\x12\x16.protos.GetUserRequest\x1a\x10.protos.UserData\x12K\n\x13GetUserAuthenticate\x12\".protos.GetUserAuthenticateRequest\x1a\x10.protos.UserData\x12\x37\n\x07GetBook\x12\x16.protos.GetBookRequest\x1a\x14.protos.GetBookReply\x12=\n\tListBooks\x12\x18.protos.ListBooksRequest\x1a\x16.protos.ListBooksReply\x12@\n\nCreateBook\x12\x19.protos.CreateBookRequest\x1a\x17.protos.CreateBookReply\x12@\n\nUpdateBook\x12\x19.protos.UpdateBookRequest\x1a\x17.protos.UpdateBookReply\x12@\n\nDeleteBook\x12\x19.protos.DeleteBookRequest\x1a\x17.protos.DeleteBookReply2a\n\x02\x41I\x12[\n\x13GetSimpleGeneration\x12\".protos.GetSimpleGenerationRequest\x1a .protos.GetSimpleGenerationReplyb\x06proto3'
+  serialized_pb=b'\n\x0e\x65ntities.proto\x12\x06protos\"Y\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"\x11\n\x0f\x43reateUserReply\"\x1c\n\x0eGetUserRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"=\n\x1aGetUserAuthenticateRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"J\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"-\n\x0eGetBookRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"K\n\x0cGetBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0c\n\x04\x62ody\x18\x04 \x01(\t\"#\n\x10ListBooksRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0eListBooksReply\x12\x1f\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x10.protos.ListBook\"9\n\x08ListBook\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"$\n\x11\x43reateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"\x1d\n\x0f\x43reateBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\"a\n\x11UpdateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\"\x11\n\x0fUpdateBookReply\"0\n\x11\x44\x65leteBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\"\x11\n\x0f\x44\x65leteBookReply\"/\n\x1aGetSimpleGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\",\n\x18GetSimpleGenerationReply\x12\x10\n\x08messages\x18\x01 \x03(\t\".\n\x19GetLargeGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\"*\n\x17GetLargeGenerationReply\x12\x0f\n\x07message\x18\x01 \x01(\t2\x8b\x04\n\x07Persist\x12@\n\nCreateUser\x12\x19.protos.CreateUserRequest\x1a\x17.protos.CreateUserReply\x12\x33\n\x07GetUser\x12\x16.protos.GetUserRequest\x1a\x10.protos.UserData\x12K\n\x13GetUserAuthenticate\x12\".protos.GetUserAuthenticateRequest\x1a\x10.protos.UserData\x12\x37\n\x07GetBook\x12\x16.protos.GetBookRequest\x1a\x14.protos.GetBookReply\x12=\n\tListBooks\x12\x18.protos.ListBooksRequest\x1a\x16.protos.ListBooksReply\x12@\n\nCreateBook\x12\x19.protos.CreateBookRequest\x1a\x17.protos.CreateBookReply\x12@\n\nUpdateBook\x12\x19.protos.UpdateBookRequest\x1a\x17.protos.UpdateBookReply\x12@\n\nDeleteBook\x12\x19.protos.DeleteBookRequest\x1a\x17.protos.DeleteBookReply2\xbb\x01\n\x02\x41I\x12[\n\x13GetSimpleGeneration\x12\".protos.GetSimpleGenerationRequest\x1a .protos.GetSimpleGenerationReply\x12X\n\x12GetLargeGeneration\x12!.protos.GetLargeGenerationRequest\x1a\x1f.protos.GetLargeGenerationReplyb\x06proto3'
 )
 
 
@@ -686,6 +686,68 @@ _GETSIMPLEGENERATIONREPLY = _descriptor.Descriptor(
   serialized_end=925,
 )
 
+
+_GETLARGEGENERATIONREQUEST = _descriptor.Descriptor(
+  name='GetLargeGenerationRequest',
+  full_name='protos.GetLargeGenerationRequest',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='seed_text', full_name='protos.GetLargeGenerationRequest.seed_text', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=927,
+  serialized_end=973,
+)
+
+
+_GETLARGEGENERATIONREPLY = _descriptor.Descriptor(
+  name='GetLargeGenerationReply',
+  full_name='protos.GetLargeGenerationReply',
+  filename=None,
+  file=DESCRIPTOR,
+  containing_type=None,
+  fields=[
+    _descriptor.FieldDescriptor(
+      name='message', full_name='protos.GetLargeGenerationReply.message', index=0,
+      number=1, type=9, cpp_type=9, label=1,
+      has_default_value=False, default_value=b"".decode('utf-8'),
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
+  ],
+  extensions=[
+  ],
+  nested_types=[],
+  enum_types=[
+  ],
+  serialized_options=None,
+  is_extendable=False,
+  syntax='proto3',
+  extension_ranges=[],
+  oneofs=[
+  ],
+  serialized_start=975,
+  serialized_end=1017,
+)
+
 _LISTBOOKSREPLY.fields_by_name['books'].message_type = _LISTBOOK
 DESCRIPTOR.message_types_by_name['CreateUserRequest'] = _CREATEUSERREQUEST
 DESCRIPTOR.message_types_by_name['CreateUserReply'] = _CREATEUSERREPLY
@@ -705,6 +767,8 @@ DESCRIPTOR.message_types_by_name['DeleteBookRequest'] = _DELETEBOOKREQUEST
 DESCRIPTOR.message_types_by_name['DeleteBookReply'] = _DELETEBOOKREPLY
 DESCRIPTOR.message_types_by_name['GetSimpleGenerationRequest'] = _GETSIMPLEGENERATIONREQUEST
 DESCRIPTOR.message_types_by_name['GetSimpleGenerationReply'] = _GETSIMPLEGENERATIONREPLY
+DESCRIPTOR.message_types_by_name['GetLargeGenerationRequest'] = _GETLARGEGENERATIONREQUEST
+DESCRIPTOR.message_types_by_name['GetLargeGenerationReply'] = _GETLARGEGENERATIONREPLY
 _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 
 CreateUserRequest = _reflection.GeneratedProtocolMessageType('CreateUserRequest', (_message.Message,), {
@@ -833,6 +897,20 @@ GetSimpleGenerationReply = _reflection.GeneratedProtocolMessageType('GetSimpleGe
   })
 _sym_db.RegisterMessage(GetSimpleGenerationReply)
 
+GetLargeGenerationRequest = _reflection.GeneratedProtocolMessageType('GetLargeGenerationRequest', (_message.Message,), {
+  'DESCRIPTOR' : _GETLARGEGENERATIONREQUEST,
+  '__module__' : 'entities_pb2'
+  # @@protoc_insertion_point(class_scope:protos.GetLargeGenerationRequest)
+  })
+_sym_db.RegisterMessage(GetLargeGenerationRequest)
+
+GetLargeGenerationReply = _reflection.GeneratedProtocolMessageType('GetLargeGenerationReply', (_message.Message,), {
+  'DESCRIPTOR' : _GETLARGEGENERATIONREPLY,
+  '__module__' : 'entities_pb2'
+  # @@protoc_insertion_point(class_scope:protos.GetLargeGenerationReply)
+  })
+_sym_db.RegisterMessage(GetLargeGenerationReply)
+
 
 
 _PERSIST = _descriptor.ServiceDescriptor(
@@ -841,8 +919,8 @@ _PERSIST = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=928,
-  serialized_end=1451,
+  serialized_start=1020,
+  serialized_end=1543,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateUser',
@@ -928,8 +1006,8 @@ _AI = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
-  serialized_start=1453,
-  serialized_end=1550,
+  serialized_start=1546,
+  serialized_end=1733,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSimpleGeneration',
@@ -938,6 +1016,15 @@ _AI = _descriptor.ServiceDescriptor(
     containing_service=None,
     input_type=_GETSIMPLEGENERATIONREQUEST,
     output_type=_GETSIMPLEGENERATIONREPLY,
+    serialized_options=None,
+  ),
+  _descriptor.MethodDescriptor(
+    name='GetLargeGeneration',
+    full_name='protos.AI.GetLargeGeneration',
+    index=1,
+    containing_service=None,
+    input_type=_GETLARGEGENERATIONREQUEST,
+    output_type=_GETLARGEGENERATIONREPLY,
     serialized_options=None,
   ),
 ])

@@ -33,6 +33,7 @@
 <style>
 body,
 html {
+  overflow: hidden;
   font-family: "Courier New", Courier, monospace;
   height: 100%;
   margin: 0;

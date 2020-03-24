@@ -6,11 +6,11 @@
       <input placeholder="name" id="name" v-model="book.name" />
       <textarea
         placeholder="description"
-        v-on:input="autoGrow"
+        v-on:input="autoGrow($event.target)"
         id="description"
         v-model="book.description"
       />
-      <textarea placeholder="body" v-on:input="autoGrow" id="body" v-model="book.body" />
+      <AutoComplete v-on:onInput="autoGrow" v-bind:body.sync="book.body" />
     </div>
     <LoadingIndicator v-else />
   </div>
@@ -21,6 +21,7 @@
 import SimpleButton from "@/components/SimpleButton.vue";
 import LoadingIndicator from "@/components/LoadingIndicator.vue";
 import SavingIndicator from "@/components/SavingIndicator.vue";
+import AutoComplete from "@/components/Autocomplete.vue";
 
 export default {
   name: "book-edit",
@@ -35,7 +36,8 @@ export default {
   components: {
     SimpleButton,
     LoadingIndicator,
-    SavingIndicator
+    SavingIndicator,
+    AutoComplete
   },
   created() {
     this.getBook();
@@ -106,10 +108,12 @@ export default {
         this.book = data;
       }
     },
-    autoGrow: function(event) {
-      // console.log(event);
-      event.target.style.height = "5px";
-      event.target.style.height = event.target.scrollHeight + "px";
+    autoGrow: function(target) {
+      setTimeout(function() {
+        console.log("auto grow", target);
+        target.style.height = "5px";
+        target.style.height = target.scrollHeight + "px";
+      }, 1);
     }
   }
 };

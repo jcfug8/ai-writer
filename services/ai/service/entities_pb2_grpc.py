@@ -180,6 +180,11 @@ class AIStub(object):
         request_serializer=entities__pb2.GetSimpleGenerationRequest.SerializeToString,
         response_deserializer=entities__pb2.GetSimpleGenerationReply.FromString,
         )
+    self.GetLargeGeneration = channel.unary_unary(
+        '/protos.AI/GetLargeGeneration',
+        request_serializer=entities__pb2.GetLargeGenerationRequest.SerializeToString,
+        response_deserializer=entities__pb2.GetLargeGenerationReply.FromString,
+        )
 
 
 class AIServicer(object):
@@ -193,6 +198,13 @@ class AIServicer(object):
     context.set_details('Method not implemented!')
     raise NotImplementedError('Method not implemented!')
 
+  def GetLargeGeneration(self, request, context):
+    # missing associated documentation comment in .proto file
+    pass
+    context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+    context.set_details('Method not implemented!')
+    raise NotImplementedError('Method not implemented!')
+
 
 def add_AIServicer_to_server(servicer, server):
   rpc_method_handlers = {
@@ -200,6 +212,11 @@ def add_AIServicer_to_server(servicer, server):
           servicer.GetSimpleGeneration,
           request_deserializer=entities__pb2.GetSimpleGenerationRequest.FromString,
           response_serializer=entities__pb2.GetSimpleGenerationReply.SerializeToString,
+      ),
+      'GetLargeGeneration': grpc.unary_unary_rpc_method_handler(
+          servicer.GetLargeGeneration,
+          request_deserializer=entities__pb2.GetLargeGenerationRequest.FromString,
+          response_serializer=entities__pb2.GetLargeGenerationReply.SerializeToString,
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(

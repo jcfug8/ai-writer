@@ -78,6 +78,7 @@ func NewService(p pb.PersistClient, a pb.AIClient, opts *Opts) *Service {
 	s.router.Methods("PUT").Path("/api/book").HandlerFunc(s.updateBook)
 	s.router.Methods("POST").Path("/api/book").HandlerFunc(s.createBook)
 	s.router.Methods("POST").Path("/api/getsimple").HandlerFunc(s.getSimple)
+	s.router.Methods("POST").Path("/api/getlarge").HandlerFunc(s.getLarge)
 
 	// set up static file routes
 	s.router.Methods("GET").PathPrefix("/assets/").Handler(s.fileServer)
