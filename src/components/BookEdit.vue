@@ -10,7 +10,7 @@
         id="description"
         v-model="book.description"
       />
-      <AutoComplete v-on:onInput="autoGrow" v-bind:body.sync="book.body" />
+      <AutoComplete ref="body-area" v-on:onInput="autoGrow" v-bind:body.sync="book.body" />
     </div>
     <LoadingIndicator v-else />
   </div>
@@ -110,7 +110,7 @@ export default {
     },
     autoGrow: function(target) {
       setTimeout(function() {
-        console.log("auto grow", target);
+        // console.log("auto grow", target);
         target.style.height = "5px";
         target.style.height = target.scrollHeight + "px";
       }, 1);

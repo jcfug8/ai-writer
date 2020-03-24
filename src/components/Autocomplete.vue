@@ -54,29 +54,30 @@ export default {
   methods: {
     getSuggestions: function(event) {
       console.log("get", event);
-      if (event.keyCode == 13 && this.autoShowing) {
-        // enter
+      if (
+        (event.keyCode == 13 && this.autoShowing) ||
+        (event.keyCode == 40 && this.autoShowing) ||
+        (event.keyCode == 38 && this.autoShowing)
+      ) {
+        // up down or enter
         return false;
-      } else if (event.keyCode == 40 && this.autoShowing) {
-        // down
-        return false;
-      } else if (event.keyCode == 38 && this.autoShowing) {
-        // up
-        return false;
+      } else if (event.keyCode == 81 && event.ctrlKey && event.shiftKey) {
+        console.log("big");
+        this.loadLargeSuggestion();
       } else if (event.keyCode == 81 && event.ctrlKey) {
+        console.log("small");
         this.showAuto();
         this.loadSuggestions();
-      } else if (event.keyCode != 17) {
+      } else if (event.keyCode != 17 && event.keyCode != 16) {
         this.hideAuto();
       }
     },
     navSuggestions: function(event) {
-      console.log("nav", event);
+      // console.log("nav", event);
       if (event.keyCode == 13 && this.autoShowing) {
         // enter
         event.preventDefault();
         event.stopImmediatePropagation();
-        console.log("enter");
         let e = { target: this.$refs["auto-area"] };
         this.selectSuggestion(e);
         return false;
@@ -197,6 +198,42 @@ export default {
         console.log("error getting suggestions", err);
       }
     },
+    loadLargeSuggestion: async function() {
+      let input = this.$refs["auto-area"];
+      input.disabled = true;
+      let seed_text = this.$refs["auto-area"].value.slice(-255);
+      let res;
+      try {
+        res = await fetch(
+          `http://${this.$root.$data.state.baseURL}/api/getlarge`,
+          {
+            method: "POST",
+            mode: "cors",
+            credentials: "include", // include, *same-origin, omit
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ seed_text })
+          }
+        );
+        if (res.status == 200) {
+          console.log("200 status getting suggestions", res);
+          let body = await res.json();
+          console.log("suggestion body", body);
+          input.disabled = false;
+          let index = input.selectionEnd;
+          this.dataText =
+            this.dataText.slice(0, index) +
+            body.message +
+            this.dataText.slice(index);
+          // this.$emit("update:body", this.dataText);
+          this.hideAuto();
+          this.input();
+        }
+      } catch (err) {
+        console.log("error getting suggestions", err);
+      }
+    },
     selectSuggestion: function(event) {
       let suggestion = this.suggestions[this.active];
       let input = this.$refs["auto-area"];
@@ -246,6 +283,10 @@ export default {
   margin-block-start: 0;
   margin-block-end: 0;
   padding-inline-start: 0;
+}
+
+.autocomplete-container ul li:not(:last-child) {
+  border-bottom: 1px #c4c4c4 dotted;
 }
 
 .autocomplete-container ul li {
