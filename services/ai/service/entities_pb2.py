@@ -18,7 +18,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   package='protos',
   syntax='proto3',
   serialized_options=None,
-  serialized_pb=b'\n\x0e\x65ntities.proto\x12\x06protos\"Y\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"\x11\n\x0f\x43reateUserReply\"\x1c\n\x0eGetUserRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"=\n\x1aGetUserAuthenticateRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"J\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"-\n\x0eGetBookRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"K\n\x0cGetBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0c\n\x04\x62ody\x18\x04 \x01(\t\"#\n\x10ListBooksRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0eListBooksReply\x12\x1f\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x10.protos.ListBook\"9\n\x08ListBook\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\"$\n\x11\x43reateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"\x1d\n\x0f\x43reateBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\"a\n\x11UpdateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\"\x11\n\x0fUpdateBookReply\"0\n\x11\x44\x65leteBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\"\x11\n\x0f\x44\x65leteBookReply\"/\n\x1aGetSimpleGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\",\n\x18GetSimpleGenerationReply\x12\x10\n\x08messages\x18\x01 \x03(\t\".\n\x19GetLargeGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\"*\n\x17GetLargeGenerationReply\x12\x0f\n\x07message\x18\x01 \x01(\t2\x8b\x04\n\x07Persist\x12@\n\nCreateUser\x12\x19.protos.CreateUserRequest\x1a\x17.protos.CreateUserReply\x12\x33\n\x07GetUser\x12\x16.protos.GetUserRequest\x1a\x10.protos.UserData\x12K\n\x13GetUserAuthenticate\x12\".protos.GetUserAuthenticateRequest\x1a\x10.protos.UserData\x12\x37\n\x07GetBook\x12\x16.protos.GetBookRequest\x1a\x14.protos.GetBookReply\x12=\n\tListBooks\x12\x18.protos.ListBooksRequest\x1a\x16.protos.ListBooksReply\x12@\n\nCreateBook\x12\x19.protos.CreateBookRequest\x1a\x17.protos.CreateBookReply\x12@\n\nUpdateBook\x12\x19.protos.UpdateBookRequest\x1a\x17.protos.UpdateBookReply\x12@\n\nDeleteBook\x12\x19.protos.DeleteBookRequest\x1a\x17.protos.DeleteBookReply2\xbb\x01\n\x02\x41I\x12[\n\x13GetSimpleGeneration\x12\".protos.GetSimpleGenerationRequest\x1a .protos.GetSimpleGenerationReply\x12X\n\x12GetLargeGeneration\x12!.protos.GetLargeGenerationRequest\x1a\x1f.protos.GetLargeGenerationReplyb\x06proto3'
+  serialized_pb=b'\n\x0e\x65ntities.proto\x12\x06protos\"Y\n\x11\x43reateUserRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"\x11\n\x0f\x43reateUserReply\"\x1c\n\x0eGetUserRequest\x12\n\n\x02id\x18\x01 \x01(\x03\"=\n\x1aGetUserAuthenticateRequest\x12\r\n\x05\x65mail\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"J\n\x08UserData\x12\n\n\x02id\x18\x01 \x01(\x03\x12\r\n\x05\x65mail\x18\x02 \x01(\t\x12\x11\n\tfirstname\x18\x03 \x01(\t\x12\x10\n\x08lastname\x18\x04 \x01(\t\"-\n\x0eGetBookRequest\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0f\n\x07user_id\x18\x02 \x01(\x03\"Z\n\x0cGetBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x0c\n\x04\x62ody\x18\x04 \x01(\t\x12\r\n\x05genre\x18\x05 \x01(\x05\"#\n\x10ListBooksRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"1\n\x0eListBooksReply\x12\x1f\n\x05\x62ooks\x18\x01 \x03(\x0b\x32\x10.protos.ListBook\"H\n\x08ListBook\x12\n\n\x02id\x18\x01 \x01(\x03\x12\x0c\n\x04name\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\r\n\x05genre\x18\x04 \x01(\x05\"$\n\x11\x43reateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\"\x1d\n\x0f\x43reateBookReply\x12\n\n\x02id\x18\x01 \x01(\x03\"p\n\x11UpdateBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\x12\x0c\n\x04name\x18\x03 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x04 \x01(\t\x12\x0c\n\x04\x62ody\x18\x05 \x01(\t\x12\r\n\x05genre\x18\x06 \x01(\x05\"\x11\n\x0fUpdateBookReply\"0\n\x11\x44\x65leteBookRequest\x12\x0f\n\x07user_id\x18\x01 \x01(\x03\x12\n\n\x02id\x18\x02 \x01(\x03\"\x11\n\x0f\x44\x65leteBookReply\">\n\x1aGetSimpleGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\x12\r\n\x05genre\x18\x02 \x01(\x05\",\n\x18GetSimpleGenerationReply\x12\x10\n\x08messages\x18\x01 \x03(\t\"=\n\x19GetLargeGenerationRequest\x12\x11\n\tseed_text\x18\x01 \x01(\t\x12\r\n\x05genre\x18\x02 \x01(\x05\"*\n\x17GetLargeGenerationReply\x12\x0f\n\x07message\x18\x01 \x01(\t2\x8b\x04\n\x07Persist\x12@\n\nCreateUser\x12\x19.protos.CreateUserRequest\x1a\x17.protos.CreateUserReply\x12\x33\n\x07GetUser\x12\x16.protos.GetUserRequest\x1a\x10.protos.UserData\x12K\n\x13GetUserAuthenticate\x12\".protos.GetUserAuthenticateRequest\x1a\x10.protos.UserData\x12\x37\n\x07GetBook\x12\x16.protos.GetBookRequest\x1a\x14.protos.GetBookReply\x12=\n\tListBooks\x12\x18.protos.ListBooksRequest\x1a\x16.protos.ListBooksReply\x12@\n\nCreateBook\x12\x19.protos.CreateBookRequest\x1a\x17.protos.CreateBookReply\x12@\n\nUpdateBook\x12\x19.protos.UpdateBookRequest\x1a\x17.protos.UpdateBookReply\x12@\n\nDeleteBook\x12\x19.protos.DeleteBookRequest\x1a\x17.protos.DeleteBookReply2\xbb\x01\n\x02\x41I\x12[\n\x13GetSimpleGeneration\x12\".protos.GetSimpleGenerationRequest\x1a .protos.GetSimpleGenerationReply\x12X\n\x12GetLargeGeneration\x12!.protos.GetLargeGenerationRequest\x1a\x1f.protos.GetLargeGenerationReplyb\x06proto3'
 )
 
 
@@ -294,6 +294,13 @@ _GETBOOKREPLY = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='genre', full_name='protos.GetBookReply.genre', index=4,
+      number=5, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -307,7 +314,7 @@ _GETBOOKREPLY = _descriptor.Descriptor(
   oneofs=[
   ],
   serialized_start=352,
-  serialized_end=427,
+  serialized_end=442,
 )
 
 
@@ -337,8 +344,8 @@ _LISTBOOKSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=429,
-  serialized_end=464,
+  serialized_start=444,
+  serialized_end=479,
 )
 
 
@@ -368,8 +375,8 @@ _LISTBOOKSREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=466,
-  serialized_end=515,
+  serialized_start=481,
+  serialized_end=530,
 )
 
 
@@ -401,6 +408,13 @@ _LISTBOOK = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='genre', full_name='protos.ListBook.genre', index=3,
+      number=4, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -413,8 +427,8 @@ _LISTBOOK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=517,
-  serialized_end=574,
+  serialized_start=532,
+  serialized_end=604,
 )
 
 
@@ -444,8 +458,8 @@ _CREATEBOOKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=576,
-  serialized_end=612,
+  serialized_start=606,
+  serialized_end=642,
 )
 
 
@@ -475,8 +489,8 @@ _CREATEBOOKREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=614,
-  serialized_end=643,
+  serialized_start=644,
+  serialized_end=673,
 )
 
 
@@ -522,6 +536,13 @@ _UPDATEBOOKREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='genre', full_name='protos.UpdateBookRequest.genre', index=5,
+      number=6, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -534,8 +555,8 @@ _UPDATEBOOKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=645,
-  serialized_end=742,
+  serialized_start=675,
+  serialized_end=787,
 )
 
 
@@ -558,8 +579,8 @@ _UPDATEBOOKREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=744,
-  serialized_end=761,
+  serialized_start=789,
+  serialized_end=806,
 )
 
 
@@ -596,8 +617,8 @@ _DELETEBOOKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=763,
-  serialized_end=811,
+  serialized_start=808,
+  serialized_end=856,
 )
 
 
@@ -620,8 +641,8 @@ _DELETEBOOKREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=813,
-  serialized_end=830,
+  serialized_start=858,
+  serialized_end=875,
 )
 
 
@@ -639,6 +660,13 @@ _GETSIMPLEGENERATIONREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='genre', full_name='protos.GetSimpleGenerationRequest.genre', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -651,8 +679,8 @@ _GETSIMPLEGENERATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=832,
-  serialized_end=879,
+  serialized_start=877,
+  serialized_end=939,
 )
 
 
@@ -682,8 +710,8 @@ _GETSIMPLEGENERATIONREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=881,
-  serialized_end=925,
+  serialized_start=941,
+  serialized_end=985,
 )
 
 
@@ -701,6 +729,13 @@ _GETLARGEGENERATIONREQUEST = _descriptor.Descriptor(
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR),
+    _descriptor.FieldDescriptor(
+      name='genre', full_name='protos.GetLargeGenerationRequest.genre', index=1,
+      number=2, type=5, cpp_type=1, label=1,
+      has_default_value=False, default_value=0,
+      message_type=None, enum_type=None, containing_type=None,
+      is_extension=False, extension_scope=None,
+      serialized_options=None, file=DESCRIPTOR),
   ],
   extensions=[
   ],
@@ -713,8 +748,8 @@ _GETLARGEGENERATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=927,
-  serialized_end=973,
+  serialized_start=987,
+  serialized_end=1048,
 )
 
 
@@ -744,8 +779,8 @@ _GETLARGEGENERATIONREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=975,
-  serialized_end=1017,
+  serialized_start=1050,
+  serialized_end=1092,
 )
 
 _LISTBOOKSREPLY.fields_by_name['books'].message_type = _LISTBOOK
@@ -919,8 +954,8 @@ _PERSIST = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
-  serialized_start=1020,
-  serialized_end=1543,
+  serialized_start=1095,
+  serialized_end=1618,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateUser',
@@ -1006,8 +1041,8 @@ _AI = _descriptor.ServiceDescriptor(
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
-  serialized_start=1546,
-  serialized_end=1733,
+  serialized_start=1621,
+  serialized_end=1808,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSimpleGeneration',

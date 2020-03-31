@@ -54,6 +54,7 @@ message GetBookReply {
     string name        = 2;
     string description = 3;
     string body        = 4;
+    int32  genre       = 5;
 }
 
 message ListBooksRequest {
@@ -68,6 +69,7 @@ message ListBook {
     int64 id           = 1;
     string name        = 2;
     string description = 3;
+    int32  genre       = 4;
 }
 
 message CreateBookRequest {
@@ -84,6 +86,7 @@ message UpdateBookRequest {
     string name        = 3;
     string description = 4;
     string body        = 5;
+    int32  genre       = 6;
 }
 
 message UpdateBookReply {}
@@ -97,6 +100,7 @@ message DeleteBookReply {}
 
 message GetSimpleGenerationRequest{
     string seed_text = 1;
+    int32 genre      = 2;
 }
 
 message GetSimpleGenerationReply{
@@ -105,6 +109,7 @@ message GetSimpleGenerationReply{
 
 message GetLargeGenerationRequest{
     string seed_text = 1;
+    int32 genre      = 2;
 }
 
 message GetLargeGenerationReply{

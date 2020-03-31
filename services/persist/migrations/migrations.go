@@ -33,6 +33,11 @@ var (
 						PRIMARY KEY (id)
 					 ) ENGINE=InnoDB CHARACTER SET=utf8;`,
 		},
+		{
+			Version:     1.2,
+			Description: "Add Genre to books table",
+			Script:      `ALTER TABLE books ADD genre INTEGER NOT NULL DEFAULT(1);`,
+		},
 	}
 )
 

@@ -2,6 +2,11 @@
   <div id="bookEdit">
     <div v-if="book != null">
       <SimpleButton v-on:click="$router.push('/books')">Back</SimpleButton>
+      <span id="genreLabel">Book Genre-</span>
+      <select v-model.number="book.genre">
+        <option value="1">Agatha Christie</option>
+        <option value="2">Charlse Dickens</option>
+      </select>
       <SavingIndicator v-bind:state="state" />
       <input placeholder="name" id="name" v-model="book.name" />
       <textarea
@@ -10,7 +15,12 @@
         id="description"
         v-model="book.description"
       />
-      <AutoComplete ref="body-area" v-on:onInput="autoGrow" v-bind:body.sync="book.body" />
+      <AutoComplete
+        ref="body-area"
+        v-bind:genre="book.genre"
+        v-on:onInput="autoGrow"
+        v-bind:body.sync="book.body"
+      />
     </div>
     <LoadingIndicator v-else />
   </div>
@@ -158,5 +168,10 @@ textarea {
 
 #body {
   min-height: 300px;
+}
+
+#genreLabel {
+  margin: 0 0 0 10px;
+  font-weight: 600;
 }
 </style>

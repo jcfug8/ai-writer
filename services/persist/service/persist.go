@@ -157,10 +157,10 @@ func (s *Service) GetUserAuthenticate(ctx context.Context, req *pb.GetUserAuthen
 
 // GetBook -
 func (s *Service) GetBook(ctx context.Context, req *pb.GetBookRequest) (*pb.GetBookReply, error) {
-	rows := s.db.QueryRowContext(ctx, "SELECT id, name, description, body FROM books WHERE id = ? AND user_id = ?", req.GetId(), req.GetUserId())
+	rows := s.db.QueryRowContext(ctx, "SELECT id, name, description, body, genre FROM books WHERE id = ? AND user_id = ?", req.GetId(), req.GetUserId())
 	reply := &pb.GetBookReply{}
 
-	if err := rows.Scan(&reply.Id, &reply.Name, &reply.Description, &reply.Body); err == sql.ErrNoRows {
+	if err := rows.Scan(&reply.Id, &reply.Name, &reply.Description, &reply.Body, &reply.Genre); err == sql.ErrNoRows {
 		log.Infof("book %d was not found for user %d: %s", req.GetId(), req.GetUserId(), err)
 		return nil, errors.New(http.StatusNotFound, "book not found")
 	} else if err != nil {
@@ -173,7 +173,7 @@ func (s *Service) GetBook(ctx context.Context, req *pb.GetBookRequest) (*pb.GetB
 
 // ListBooks -
 func (s *Service) ListBooks(ctx context.Context, req *pb.ListBooksRequest) (*pb.ListBooksReply, error) {
-	rows, err := s.db.QueryContext(ctx, "SELECT id, name, description FROM books WHERE user_id = ?", req.GetUserId())
+	rows, err := s.db.QueryContext(ctx, "SELECT id, name, description, genre FROM books WHERE user_id = ?", req.GetUserId())
 
 	if err != nil {
 		log.Infof("unable to query for books for user %d: %s", req.GetUserId(), err)
@@ -185,7 +185,7 @@ func (s *Service) ListBooks(ctx context.Context, req *pb.ListBooksRequest) (*pb.
 
 	for rows.Next() {
 		book := &pb.ListBook{}
-		err = rows.Scan(&book.Id, &book.Name, &book.Description)
+		err = rows.Scan(&book.Id, &book.Name, &book.Description, &book.Genre)
 		if err != nil {
 			log.Infof("error scaning over books for user %d: %s", req.GetUserId(), err)
 			return nil, errors.New(http.StatusInternalServerError, "error scanning over book list")
@@ -246,10 +246,11 @@ func (s *Service) UpdateBook(ctx context.Context, req *pb.UpdateBookRequest) (*p
 
 	_, err := s.db.ExecContext(
 		ctx,
-		"UPDATE books SET name = ?, description = ?, body = ? WHERE id = ? AND user_id = ?",
+		"UPDATE books SET name = ?, description = ?, body = ?, genre = ? WHERE id = ? AND user_id = ?",
 		req.GetName(),
 		req.GetDescription(),
 		req.GetBody(),
+		req.GetGenre(),
 		req.GetId(),
 		req.GetUserId(),
 	)

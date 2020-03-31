@@ -25,3 +25,4 @@ yarn-error.log*
 
 ~*
 services/ai/service/models/*
+dataset/txt

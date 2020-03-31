@@ -26,7 +26,7 @@
         <br />
         <input placeholder="Password" type="password" v-model="signupData.password" />
         <br />
-        <input placeholder="Repeat Password" type="password" v-model="signupData.password" />
+        <input placeholder="Repeat Password" type="password" v-model="signupData.password2" />
         <br />
         <SimpleButton v-on:click="singup">Submit</SimpleButton>
       </div>
@@ -56,7 +56,8 @@ export default {
         firstname: "",
         lastname: "",
         email: "",
-        password: ""
+        password: "",
+        password2: ""
       }
     };
   },
@@ -104,6 +105,10 @@ export default {
     },
     singup: async function() {
       let data;
+      if (this.signupData.password != this.signupData.password2) {
+        alert("Passwords do no match");
+        return;
+      }
       let res;
       try {
         res = await fetch(`http://${this.$root.$data.state.baseURL}/api/user`, {
@@ -123,10 +128,13 @@ export default {
         data = await res.json();
         console.log(data);
       } catch (err) {
-        console.log(await err.json());
+        let error_data = err.json();
+        alert(error_data.messages);
       }
       if (res.status == 201) {
         this.toggle();
+      } else if (res.status == 409) {
+        alert(data.messages);
       }
     }
   }

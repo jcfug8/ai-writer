@@ -32,7 +32,7 @@
 <script>
 export default {
   name: "autocomplete",
-  props: ["body"],
+  props: ["body", "genre"],
   data() {
     return {
       dataText: this.body,
@@ -181,7 +181,7 @@ export default {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ seed_text })
+            body: JSON.stringify({ seed_text, genre: this.genre })
           }
         );
         if (res.status == 200) {
@@ -213,7 +213,7 @@ export default {
             headers: {
               "Content-Type": "application/json"
             },
-            body: JSON.stringify({ seed_text })
+            body: JSON.stringify({ seed_text, genre: this.genre })
           }
         );
         if (res.status == 200) {

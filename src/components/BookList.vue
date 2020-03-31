@@ -2,12 +2,20 @@
   <div id="bookList">
     <div class="page-title-contain clear-contain">
       <h1 class="page-title float-left">Book List</h1>
-      <SimpleButton class="float-left" v-on:click="createBook">Add Book</SimpleButton>
+      <SimpleButton class="float-left" v-on:click="createBook"
+        >Add Book</SimpleButton
+      >
     </div>
-    <div class="book-list-item clear-contain" v-for="book in books" v-bind:key="book.id">
-      <h2>{{ book.name }}</h2>
+    <div
+      class="book-list-item clear-contain"
+      v-for="book in books"
+      v-bind:key="book.id"
+    >
+      <h2>{{ book.name }} {{ book.genre }}</h2>
       <SimpleButton v-on:click="deleteBook(book.id)">Delete</SimpleButton>
-      <SimpleButton v-on:click="$router.push(`books/edit/${book.id}`)">Edit</SimpleButton>
+      <SimpleButton v-on:click="$router.push(`books/edit/${book.id}`)"
+        >Edit</SimpleButton
+      >
       <div class="book-desc">{{ book.description }}</div>
     </div>
   </div>
